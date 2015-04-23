@@ -94,12 +94,53 @@ def day2history_user_item(dict_user_item_label):
             else:
                 dict_user_item_feature[
                     list_item[0] + "," + list_item[1] + "," + list_item[4]] = [0, 0, 0, 72, 72, 72]
-    for k, v in dict_user_item_feature.items():
-        print k, v
     return dict_user_item_feature
+
+
+def getItemFeature():
+    f = open('item_all_feature')
+    dict_item_feature = {}
+    while 1:
+        line = f.readline()
+        if not line:
+            break
+        line_item = line.split(':')
+        dict_item_feature[line_item[0]] = line_item[1].rstrip('\n')
+    return dict_item_feature
+
+
+def getUserFeature():
+    f = open('userfeature')
+    dict_user_feature = {}
+    while 1:
+        line = f.readline()
+        if not line:
+            break
+        line_item = line.split(':')
+        dict_user_feature[line_item[0]] = line_item[1].rstrip('\n')
+    return dict_user_feature
 
 
 if __name__ == "__main__":
     dict_user_item = getTestUserItem()
     dict_user_item_feature = day2history_user_item(
         dict_user_item)
+    dict_item_feature = getItemFeature()
+    dict_user_feature = getUserFeature()
+    out = open('train_data_set', 'a')
+    for k, v in dict_user_item.items():
+        if not dict_user_item_feature.has_key(k):
+            continue
+        list_item = dict_user_item_feature[k]
+        string = ''
+        for i in list_item:
+            string = string + str(i) + ","
+        k_item = k.split(',')
+        item_id = k_item[1]
+        user_id = k_item[0]
+        string = string + dict_item_feature[item_id] + ','
+        string = string + dict_user_feature[user_id]
+        string = string + str(v)
+        print string
+        out.write(string+'\n')
+    out.close()
