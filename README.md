@@ -1,1 +1,1 @@
-echo AliBigData Competition
+#AliBigData Competition
