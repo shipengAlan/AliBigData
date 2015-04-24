@@ -1,6 +1,6 @@
 import time
 
-# get test set data
+# get test set data (12-18)
 
 
 def before_day(days, x, y):
